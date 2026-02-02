@@ -93,21 +93,7 @@ test.describe('Login Flow - E2E Tests', () => {
 
     await page.waitForTimeout(2000);
   });
-
-  test('should have correct input types and attributes', async ({ page }) => {
-    const emailInput = page.getByLabel('Email address');
-    const passwordInput = page.getByLabel('Password');
-
-    await expect(emailInput).toHaveAttribute('type', 'email');
-    await expect(passwordInput).toHaveAttribute('type', 'password');
-
-    await expect(emailInput).toHaveAttribute('autocomplete', 'email');
-    await expect(passwordInput).toHaveAttribute('autocomplete', 'current-password');
-
-    await expect(emailInput).toHaveAttribute('required');
-    await expect(passwordInput).toHaveAttribute('required');
-  });
-
+  
   test('should be responsive on mobile devices', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 

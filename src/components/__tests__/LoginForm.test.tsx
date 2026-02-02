@@ -90,6 +90,37 @@ describe('LoginForm', () => {
     expect(rememberMeCheckbox).toBeChecked();
   });
 
+  it('has correct input types and attributes', () => {
+    render(<LoginForm onSubmit={mockOnSubmit} />);
+
+    const emailInput = screen.getByLabelText(/email address/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+
+    expect(emailInput).toHaveAttribute('type', 'email');
+    expect(emailInput).toHaveAttribute('autocomplete', 'email');
+    expect(emailInput).toBeRequired();
+
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    expect(passwordInput).toHaveAttribute('autocomplete', 'current-password');
+    expect(passwordInput).toBeRequired();
+  });
+
+  it('submits form when Enter key is pressed in password field', async () => {
+    const user = userEvent.setup();
+    render(<LoginForm onSubmit={mockOnSubmit} />);
+
+    const emailInput = screen.getByLabelText(/email address/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123{enter}');
+
+    expect(mockOnSubmit).toHaveBeenCalledWith({
+      email: 'test@example.com',
+      password: 'password123'
+    });
+  });
+
   it('does not call onSubmit when prop is not provided', async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
